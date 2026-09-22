@@ -1,0 +1,2 @@
+dialog { border: 0; }
+dialog::backdrop { background: rgb(20 30 40 / 65%); }
