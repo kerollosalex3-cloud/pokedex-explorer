@@ -28,6 +28,32 @@
             <p id="search-hint" class="search-hint">Enter at least 3 letters</p>
         </div>
     </header>
-    <main class="page-content" data-id="content"><p id="status"></p></main>
+    <main class="page-content" data-id="content">
+        <section class="intro" aria-labelledby="page-title">
+            <div>
+                <p class="eyebrow"><span></span> YOUR POKÉMON FIELD GUIDE</p>
+                <h1 id="page-title">A world of Pokémon.<br><span>Ready to explore?</span></h1>
+                <p class="intro-text">Discover every Pokémon, get to know their strengths,<br class="desktop-break"> and find your next favourite.</p>
+            </div>
+            <div class="intro-ball" aria-hidden="true"><span></span></div>
+        </section>
+        <section aria-labelledby="collection-title">
+            <div class="collection-heading">
+                <div><p class="eyebrow">THE COLLECTION</p><h2 id="collection-title">Meet the Pokémon</h2></div>
+                <div class="collection-tools"><span id="result-count" aria-live="polite">Loading Pokémon…</span><button id="clear-search" class="text-button" type="button" aria-label="Clear search and show all loaded Pokémon" hidden>Show all</button></div>
+            </div>
+            <p id="status" class="status-message" role="status" aria-live="polite"></p>
+            <ul id="pokemon-list" class="pokemon-grid" aria-label="Pokémon collection"></ul>
+            <div id="empty-state"></div>
+            <div class="load-more-area">
+                <button id="load-more-button" data-id="load-more-button" class="load-more-button" type="button" aria-label="Load 24 more Pokémon">Load more Pokémon <span aria-hidden="true">↓</span></button>
+                <p>There’s always more to discover.</p>
+            </div>
+        </section>
+        <noscript><p>This Pokédex needs JavaScript. Please enable it to explore Pokémon.</p></noscript>
+    </main>
+    <footer class="site-footer"><div><span class="footer-brand">Pokédex.</span><p>Made for curious trainers.</p><a href="https://pokeapi.co/" target="_blank" rel="noopener">Data from PokéAPI <span aria-hidden="true">↗</span></a></div></footer>
+    <div id="loading-screen" class="loading-screen" role="status" aria-live="polite" hidden><div class="loading-box"><img src="assets/pokeball.svg" alt="" width="52" height="52"><p id="loading-text">Loading Pokémon…</p></div></div>
+    <dialog id="pokemon-dialog" data-id="dialog" aria-label="Pokémon details"><div id="dialog-content"></div></dialog>
 </body>
 </html>
