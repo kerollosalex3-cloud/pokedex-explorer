@@ -14,3 +14,27 @@ function typeTemplate(type, name) {
     return `<span class="type-badge type-${type}">${name}</span>`;
 }
 
+function dialogTemplate(name, number, type, image, types, previous, next) {
+    return `<div class="pokemon-detail type-${type}" data-id="overlay-pokemon-name">
+        <div class="dialog-hero"><div class="dialog-top"><span class="pokemon-number">${number}</span><button class="close-button" type="button" data-id="close-dialog-button" data-action="close" aria-label="Close Pokémon details">×</button></div>
+        <h2 id="dialog-title">${name}</h2><div class="type-list">${types}</div><img class="dialog-pokemon" data-id="dialog-image" src="${image}" alt="${name}" width="200" height="200"></div>
+        <div class="dialog-body"><div class="detail-tabs" role="tablist" aria-label="Pokémon information">
+            <button class="tab-button" id="tab-about" role="tab" type="button" data-tab="about" aria-label="Show Pokémon information" aria-selected="false" aria-controls="detail-panel" tabindex="-1">About</button>
+            <button class="tab-button active" id="tab-stats" role="tab" type="button" data-tab="stats" aria-label="Show Pokémon base stats" aria-selected="true" aria-controls="detail-panel">Base stats</button>
+        </div><div id="detail-panel" role="tabpanel" aria-labelledby="tab-stats" tabindex="0"></div><p id="detail-status" role="status" aria-live="polite"></p></div>
+        <div class="dialog-navigation"><button class="previous" type="button" data-id="prev-button" data-action="previous" aria-label="View previous Pokémon, ${previous}"><span class="nav-arrow" aria-hidden="true">←</span><span>${previous}</span></button><button class="next" type="button" data-id="next-button" data-action="next" aria-label="View next Pokémon, ${next}"><span>${next}</span><span class="nav-arrow" aria-hidden="true">→</span></button></div>
+    </div>`;
+}
+
+function statTemplate(name, value, width) {
+    return `<div class="stat-row"><span>${name}</span><strong>${value}</strong><div class="stat-track" role="progressbar" aria-label="${name}" aria-valuenow="${value}" aria-valuemin="0" aria-valuemax="255"><span style="width:${width}%"></span></div></div>`;
+}
+
+function statListTemplate(stats) {
+    return `<div class="stat-list">${stats}</div>`;
+}
+
+function aboutTemplate(height, weight, experience, abilities) {
+    return `<div class="about-grid"><div><span>Height</span><strong>${height} m</strong></div><div><span>Weight</span><strong>${weight} kg</strong></div><div><span>Base experience</span><strong>${experience}</strong></div></div><div class="abilities"><span>Abilities</span><strong>${abilities}</strong></div>`;
+}
+

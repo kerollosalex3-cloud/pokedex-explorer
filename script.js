@@ -4,6 +4,7 @@ let isLoading = false;
 
 function init() {
     document.getElementById('load-more-button').addEventListener('click', loadMore);
+    registerDialogEvents();
     loadMore();
 }
 
