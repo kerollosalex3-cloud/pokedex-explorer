@@ -21,6 +21,7 @@ function dialogTemplate(name, number, type, image, types, previous, next) {
         <div class="dialog-body"><div class="detail-tabs" role="tablist" aria-label="Pokémon information">
             <button class="tab-button" id="tab-about" role="tab" type="button" data-tab="about" aria-label="Show Pokémon information" aria-selected="false" aria-controls="detail-panel" tabindex="-1">About</button>
             <button class="tab-button active" id="tab-stats" role="tab" type="button" data-tab="stats" aria-label="Show Pokémon base stats" aria-selected="true" aria-controls="detail-panel">Base stats</button>
+            <button class="tab-button" id="tab-evolution" role="tab" type="button" data-tab="evolution" aria-label="Show Pokémon evolution" aria-selected="false" aria-controls="detail-panel" tabindex="-1">Evolution</button>
         </div><div id="detail-panel" role="tabpanel" aria-labelledby="tab-stats" tabindex="0"></div><p id="detail-status" role="status" aria-live="polite"></p></div>
         <div class="dialog-navigation"><button class="previous" type="button" data-id="prev-button" data-action="previous" aria-label="View previous Pokémon, ${previous}"><span class="nav-arrow" aria-hidden="true">←</span><span>${previous}</span></button><button class="next" type="button" data-id="next-button" data-action="next" aria-label="View next Pokémon, ${next}"><span>${next}</span><span class="nav-arrow" aria-hidden="true">→</span></button></div>
     </div>`;
@@ -38,3 +39,10 @@ function aboutTemplate(height, weight, experience, abilities) {
     return `<div class="about-grid"><div><span>Height</span><strong>${height} m</strong></div><div><span>Weight</span><strong>${weight} kg</strong></div><div><span>Base experience</span><strong>${experience}</strong></div></div><div class="abilities"><span>Abilities</span><strong>${abilities}</strong></div>`;
 }
 
+function evolutionTemplate(id, name, image) {
+    return `<button class="evolution-card" type="button" data-evolution="${id}" aria-label="View ${name} details"><img src="${image}" alt="${name}" width="80" height="80" loading="lazy"><h4>${name}</h4></button>`;
+}
+
+function evolutionListTemplate(cards) {
+    return `<p class="evolution-hint">Select a Pokémon to explore its details.</p><div class="evolution-list">${cards}</div>`;
+}

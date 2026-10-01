@@ -2,6 +2,7 @@ let activeIndex = 0;
 let dialogPokemon = [];
 let activeTab = 'stats';
 let detailVersion = 0;
+let evolutionPokemon = [];
 const statNames = ['HP', 'Attack', 'Defense', 'Sp. Atk', 'Sp. Def', 'Speed'];
 
 function registerDialogEvents() {
@@ -56,12 +57,26 @@ function handleDialogClick(event) {
     if (button.dataset.action === 'previous') changePokemon(-1);
     if (button.dataset.action === 'next') changePokemon(1);
     if (button.dataset.tab) selectDetailTab(button.dataset.tab);
+    if (button.dataset.evolution) openEvolution(Number(button.dataset.evolution));
 }
 
 function handleDialogKeys(event) {
-    if (event.target.matches('[role="tab"]')) return;
+    if (event.target.matches('[role="tab"]')) return handleTabKeys(event);
     if (event.key === 'ArrowLeft') changePokemon(-1);
     if (event.key === 'ArrowRight') changePokemon(1);
+}
+
+function handleTabKeys(event) {
+    const tabs = ['about', 'stats', 'evolution'];
+    let index = tabs.indexOf(activeTab);
+    if (event.key === 'ArrowLeft') index = (index + 2) % 3;
+    else if (event.key === 'ArrowRight') index = (index + 1) % 3;
+    else if (event.key === 'Home') index = 0;
+    else if (event.key === 'End') index = 2;
+    else return;
+    event.preventDefault();
+    selectDetailTab(tabs[index]);
+    document.getElementById('tab-' + tabs[index]).focus();
 }
 
 function selectDetailTab(tab) {
@@ -72,6 +87,7 @@ function selectDetailTab(tab) {
     document.getElementById('detail-status').textContent = '';
     if (tab === 'stats') showStats(pokemon);
     if (tab === 'about') showAbout(pokemon);
+    if (tab === 'evolution') showEvolution(pokemon, detailVersion);
 }
 
 function updateDetailTabs() {
@@ -92,6 +108,47 @@ function showStats(pokemon) {
 function showAbout(pokemon) {
     const abilities = pokemon.abilities.map(item => formatName(item.ability.name)).join(', ');
     document.getElementById('detail-panel').innerHTML = aboutTemplate(pokemon.height / 10, pokemon.weight / 10, pokemon.base_experience ?? 'Unknown', abilities);
+}
+
+async function showEvolution(pokemon, version) {
+    document.getElementById('detail-panel').innerHTML = '';
+    document.getElementById('detail-status').textContent = 'Loading evolution…';
+    try {
+        const species = await getCachedData(pokemon.species.url);
+        const chain = await getCachedData(species.evolution_chain.url);
+        const evolution = await loadEvolution(chain.chain);
+        if (version === detailVersion) renderEvolution(evolution);
+    } catch (error) {
+        if (version === detailVersion) document.getElementById('detail-status').textContent = 'Could not load evolution. Select the tab to try again.';
+    }
+}
+
+async function loadEvolution(chain) {
+    const names = collectEvolutionNames(chain);
+    return Promise.all(names.map(name => getCachedData(apiUrl + 'pokemon/' + name + '/')));
+}
+
+function collectEvolutionNames(chain) {
+    let names = [chain.species.name];
+    for (const evolution of chain.evolves_to) {
+        names = names.concat(collectEvolutionNames(evolution));
+    }
+    return names;
+}
+
+function renderEvolution(pokemon) {
+    evolutionPokemon = pokemon;
+    const cards = pokemon.map(item => evolutionTemplate(item.id, formatName(item.name), getImage(item))).join('');
+    document.getElementById('detail-panel').innerHTML = evolutionListTemplate(cards);
+    document.getElementById('detail-status').textContent = '';
+}
+
+function openEvolution(id) {
+    const pokemon = evolutionPokemon.find(item => item.id === id);
+    if (!dialogPokemon.some(item => item.id === id)) dialogPokemon.push(pokemon);
+    activeIndex = dialogPokemon.findIndex(item => item.id === id);
+    renderDialog();
+    document.getElementById('tab-stats').focus();
 }
 
 function closeDialog() {
