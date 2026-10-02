@@ -5,6 +5,7 @@ let isLoading = false;
 function init() {
     document.getElementById('load-more-button').addEventListener('click', loadMore);
     registerDialogEvents();
+    registerSearchEvents();
     loadMore();
 }
 
@@ -12,7 +13,8 @@ async function loadMore() {
     if (isLoading) return;
     setLoading(true, 'Loading Pokémon…');
     try {
-        await loadBatch();
+        if (searchQuery) await loadSearchBatch();
+        else await loadBatch();
     } catch (error) {
         showStatus('Could not load Pokémon. Please try again.', true);
     } finally {
@@ -25,13 +27,14 @@ function setLoading(loading, message) {
     document.getElementById('loading-screen').hidden = !loading;
     document.getElementById('loading-text').textContent = message;
     document.getElementById('pokemon-list').setAttribute('aria-busy', loading);
-    document.getElementById('load-more-button').disabled = loading;
-    document.getElementById('load-more-button').hidden = !nextPage;
+    document.getElementById('search-input').disabled = loading;
+    updateLoadButton();
+    updateSearchButton();
     if (loading) showStatus('');
 }
 
 function renderCards(pokemon) {
-    visiblePokemon = pokemon;
+    visiblePokemon = pokemon.slice();
     document.getElementById('pokemon-list').innerHTML = pokemon.map(createCard).join('');
     document.getElementById('result-count').textContent = pokemon.length + ' Pokémon';
     document.getElementById('empty-state').innerHTML = pokemon.length ? '' : emptyTemplate();
@@ -60,4 +63,12 @@ function showStatus(message, isError = false) {
     const status = document.getElementById('status');
     status.textContent = message;
     status.classList.toggle('error', isError);
+}
+
+function updateLoadButton() {
+    const button = document.getElementById('load-more-button');
+    const hasMore = searchQuery ? visiblePokemon.length < searchMatches.length : Boolean(nextPage);
+    button.disabled = isLoading;
+    button.hidden = !hasMore;
+    button.setAttribute('aria-label', searchQuery ? 'Load more search results' : 'Load 24 more Pokémon');
 }
