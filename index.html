@@ -15,6 +15,7 @@
     <script src="search.js" defer></script>
 </head>
 <body onload="init()">
+    <!-- start header -->
     <header class="site-header">
         <div class="header-content">
             <a class="brand" href="index.html" aria-label="Pokédex home">
@@ -29,6 +30,9 @@
             <p id="search-hint" class="search-hint">Enter at least 3 letters</p>
         </div>
     </header>
+    <!-- end header -->
+
+    <!-- start main -->
     <main class="page-content" data-id="content">
         <section class="intro" aria-labelledby="page-title">
             <div>
@@ -53,8 +57,15 @@
         </section>
         <noscript><p>This Pokédex needs JavaScript. Please enable it to explore Pokémon.</p></noscript>
     </main>
+    <!-- end main -->
+
+    <!-- start footer -->
     <footer class="site-footer"><div><span class="footer-brand">Pokédex.</span><p>Made for curious trainers.</p><a href="https://pokeapi.co/" target="_blank" rel="noopener">Data from PokéAPI <span aria-hidden="true">↗</span></a></div></footer>
+    <!-- end footer -->
+
+    <!-- start overlays -->
     <div id="loading-screen" class="loading-screen" role="status" aria-live="polite" hidden><div class="loading-box"><img src="assets/pokeball.svg" alt="" width="52" height="52"><p id="loading-text">Loading Pokémon…</p></div></div>
     <dialog id="pokemon-dialog" data-id="dialog" aria-label="Pokémon details"><div id="dialog-content"></div></dialog>
+    <!-- end overlays -->
 </body>
 </html>

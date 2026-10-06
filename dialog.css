@@ -1,3 +1,4 @@
+/* start dialog */
 body.dialog-open {
     overflow: hidden;
 }
@@ -360,3 +361,4 @@ body.dialog-open {
     .dialog-hero::before { width: 190px; height: 190px; }
     .dialog-navigation { padding-top: 6px; padding-bottom: 6px; }
 }
+/* end dialog */
